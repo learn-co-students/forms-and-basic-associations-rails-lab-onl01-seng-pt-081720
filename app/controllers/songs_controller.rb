@@ -18,6 +18,7 @@ class SongsController < ApplicationController
     artist = Artist.find_or_create_by(name: song_params[:artist_name])
     note = Note.find_or_create_by(content: params[:song][:notes_content])
     @song = artist.songs.build(song_params)
+    
   
 
     if @song.save
