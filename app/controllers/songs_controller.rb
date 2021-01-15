@@ -12,14 +12,19 @@ class SongsController < ApplicationController
   end
 
   def create
-    # @song = Song.new(song_params)
-    # @song.artist_name = params[:song][:artist_name]
-    # @song.genre = params[:song][:genre_name]
     artist = Artist.find_or_create_by(name: song_params[:artist_name])
     note = Note.find_or_create_by(content: params[:song][:notes_content])
     @song = artist.songs.build(song_params)
-    @song.notes << note.content
-  
+
+    a = params[:song][:notes_content]
+    a.each do |content|
+      if !content.blank? 
+        note = Note.new(content: content)
+        if note.save
+          @song.notes << note
+        end
+      end
+    end
 
     if @song.save
       redirect_to @song
